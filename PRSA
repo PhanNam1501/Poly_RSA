@@ -1,0 +1,20 @@
+p = 2470567871
+P.<x> = PolynomialRing(GF(p))
+n = #the polynomial n(x) look at out.txt
+c = #the polynomial m^65537 from out.txt
+e = 65537
+nx = P(n)
+factor(nx)
+###output####
+#(1932231392) * (x^127 + 483092954*x^126 + 783188479*x^125 + ... + 663555668) * (x^128 + 627460182*x^127 + 1594545998*x^126 + ... + 951119341*x + 2464448261)
+#############
+#We only care about the degrees of the factors (we can ignore the constant factor)
+phi = (pow(p, 128) -1)*(pow(p, 127) - 1)
+d = inverse_mod(e, phi)
+Q.<x> = QuotientRing(P, P.ideal(nx))
+cx = Q(c)
+m = pow(cx, d)
+flag = ""
+for i in m.coefficients():
+	flag += chr(i)
+print ("FLAG:",flag)
